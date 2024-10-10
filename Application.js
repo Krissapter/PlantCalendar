@@ -1,6 +1,6 @@
 var appInfo = "PlantTempSurveilance https://github.com/Krissapter/TemperatureSurveilance";
 
-var url = 'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=59.5622&lon=10.3630';
+var url = 'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=55.4514&lon=37.3715';
 
 //TODO Transition from running as a script to like a server.
 //TODO Make the application run the fetch using setTimeout
@@ -18,13 +18,13 @@ async function runBullshit(){
 
     var nineDayForecast = data.properties.timeseries
 
-    var freezTempsTime = [];
+    var freezeTempsTime = [];
     var subTenTime = [];
     let i = 0;
     nineDayForecast.forEach(hour => {
         if(hour.data.instant.details.air_temperature < 10){
             if(hour.data.instant.details.air_temperature <= 0){
-                freezTempsTime[i] = hour.time;
+                freezeTempsTime[i] = hour.time;
             }else{
                 subTenTime[i] = hour.time;
             }
@@ -40,14 +40,33 @@ async function runBullshit(){
         return acc;
     }, {});
     
-    console.log(subTenDay);
+    //console.log(subTenDay);
     
-    //TODO Reduce freezeTempsTime like done with subTenTime
-
+    const freezeTempDay = freezeTempsTime.reduce((acc, e) => {
+        let day = e.slice(0, 10);
+        let time = e.slice(11, 16);
+        acc[day] = acc[day] || [];
+        acc[day].push(time);
+        return acc;
+    }, {});
 
     //TODO Further expand on data processing for different temperature thresholds.
-    //TODO Check if temp is below treshold in any of the days in the list
 
+    tenDegreeLimit(subTenDay);
     //TODO Set up notification system to send a mail if a set treshold is reached.
+}
+
+//TODO Check if temp is below treshold in any of the days in the list
+
+//Some plants are generally hardy down to only 10°C
+function tenDegreeLimit(days){
+    let i = 0;
+    var dayArr = Object.keys(days);
+    dayArr.forEach(day => {
+        if (days[day].length > 4){
+            i++;
+        }
+    });
+    console.log("\nThe next 11 days may contain " + dayArr.length + " days below 10°C, starting with " + dayArr[0] + ".\n" + i +" of these are within the next 3 days, and has a high probability of being below 10°C. \nConsider taking action for less hardy plants.");
 }
 runBullshit();
