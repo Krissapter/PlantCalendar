@@ -1,14 +1,13 @@
 var appInfo = "PlantTempSurveilance https://github.com/Krissapter/TemperatureSurveilance";
 
-var url = 'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=70.5804&lon=-8.4041';
+var url = 'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=71.5752&lon=114.0527';
 
 //TODO Transition from running as a script to like a server.
 //TODO Make the application run the fetch using setTimeout
 var now = new Date();
 var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0) - now;
 
-//TODO Actual function names and stuff
-async function runBullshit(){
+async function getWeatherData(){
     let response = await fetch(url, {
         headers: {
             userAgent: appInfo
@@ -22,7 +21,6 @@ async function runBullshit(){
     var subTenTime = [];
     let i = 0;
     nineDayForecast.forEach(hour => {
-        console.log(hour.data.instant.details.air_temperature)
         if(hour.data.instant.details.air_temperature < 10){
             if(hour.data.instant.details.air_temperature <= 0){
                 freezeTempsTime[i] = hour.time;
@@ -38,7 +36,7 @@ async function runBullshit(){
         temperatureWarning(organizeColdDays(subTenTime), 10)
     }
 
-    //TODO Further expand on data processing for different temperature thresholds.
+    //TODO Further expand and on data processing for different temperature thresholds.
 
     //TODO Set up notification system to send a mail if a set treshold is reached.
 }
@@ -64,6 +62,6 @@ function temperatureWarning(days, limit){
             i++;
         }
     });
-    console.log("\nThe next 11 days may contain " + dayArr.length + " days below "+ limit + "°C, starting with " + dayArr[0] + ".\n" + i +" of these are within the next 3 days, and has a high probability of being below 10°C. \nConsider taking action for less hardy plants.");
+    console.log("\nThe next 11 days may contain " + dayArr.length + " days below "+ limit + "°C, starting with " + dayArr[0] + ".\n" + i +" of these are within the next 72 hours, and has a high probability of being below " + limit + "°C. \nConsider taking action for less hardy plants.");
 }
-runBullshit();
+getWeatherData();
