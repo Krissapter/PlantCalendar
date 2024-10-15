@@ -1,0 +1,29 @@
+{
+  "name": "temperaturesurveilance",
+  "version": "1.0.0",
+  "description": "Temperature watching for gardening purposes",
+  "main": "Application.js",
+  "scripts": {
+    "dev": "node Application.js",
+    "test":  "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Krissapter/TemperatureSurveilance.git"
+  },
+  "keywords": [
+    "Temperature",
+    "Gardening",
+    "Server",
+    "API"
+  ],
+  "author": "Kristoffer Evenrud",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Krissapter/TemperatureSurveilance/issues"
+  },
+  "homepage": "https://github.com/Krissapter/TemperatureSurveilance#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
