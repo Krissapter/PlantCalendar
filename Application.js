@@ -1,6 +1,10 @@
+import dotenv from "dotenv";
+
+dotenv.config();
+
+var url = process.env.url;
 var appInfo = "PlantTempSurveilance https://github.com/Krissapter/TemperatureSurveilance";
 
-var url = 'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=38.5216&lon=-114.0527';
 
 //TODO Transition from running as a script to like a server.
 //TODO Make the application run the fetch using setTimeout
